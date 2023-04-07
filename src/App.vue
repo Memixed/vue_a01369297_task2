@@ -17,10 +17,18 @@
       <v-spacer></v-spacer>
       <v-col cols="10" md="3">
         <v-row class="flex-row-reverse">
-          <router-link to="/about">
+          <router-link to="/">
+            <h4 style="color: #ffffff" class="ma-2">Log In</h4>
+          </router-link>
+          <router-link to="/NewUsr">
+            <h4 style="color: #FFFFFF" class="ma-2">Sign In</h4>
+          </router-link>
+        </v-row>
+        <v-row class="flex-row-reverse">
+          <router-link to="/Materias">
             <h4 style="color: #ffffff" class="ma-2">LISTADO DE MATERIAS</h4>
           </router-link>
-          <router-link to="/">
+          <router-link to="/Alumno">
             <h4 style="color: #FFFFFF" class="ma-2">INICIO</h4>
           </router-link>
         </v-row>
@@ -40,9 +48,7 @@ import firebase from "firebase/compat/app";
 export default {
   name: 'App',
   async mounted() {
-    await this.login();
-    await this.setFBdocNU();
-
+    let Not_Loged = true;
   },
   data: () => ({
     //
