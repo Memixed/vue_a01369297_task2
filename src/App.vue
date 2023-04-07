@@ -35,14 +35,35 @@
 
 <script>
 import firebase from "firebase/compat/app";
+//import {FieldValue} from "@firebase/firestore-types";
+
 export default {
   name: 'App',
+  async mounted() {
+    await this.login();
+    await this.setFBdocNU();
+
+  },
   data: () => ({
     //
   }),
   methods: {
     async login() {
       firebase.auth().signInWithEmailAndPassword('dummy@test.com','dummy');
+    },
+    async setFBdocNU() {
+      let email = firebase.auth().currentUser.email;
+      await firebase.firestore().collection('users').doc(email).set({
+        name:"Juan Escutia",
+        lastLI:Date.now(),
+      });
+    },
+    async editFBdocCU() {
+      let email = firebase.auth().currentUser.email;
+      await firebase.firestore().collection('users').doc(email).update({
+        lastLI:Date.now(),
+        //logT:FieldValue.increment(1),
+      });
     }
   },
 };
