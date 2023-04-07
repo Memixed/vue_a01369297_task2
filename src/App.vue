@@ -34,11 +34,16 @@
 </template>
 
 <script>
+import firebase from "firebase/compat/app";
 export default {
   name: 'App',
-
   data: () => ({
     //
   }),
+  methods: {
+    async login() {
+      firebase.auth().signInWithEmailAndPassword('dummy@test.com','dummy');
+    }
+  },
 };
 </script>
