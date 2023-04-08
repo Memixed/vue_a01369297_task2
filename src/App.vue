@@ -48,29 +48,16 @@ import firebase from "firebase/compat/app";
 export default {
   name: 'App',
   async mounted() {
-    let Not_Loged = true;
+    login();
+
   },
   data: () => ({
     //
   }),
   methods: {
     async login() {
-      firebase.auth().signInWithEmailAndPassword('dummy@test.com','dummy');
+      await firebase.auth().signInWithEmailAndPassword('dummy3@test.com','dummy3');
     },
-    async setFBdocNU() {
-      let email = firebase.auth().currentUser.email;
-      await firebase.firestore().collection('users').doc(email).set({
-        name:"Juan Escutia",
-        lastLI:Date.now(),
-      });
-    },
-    async editFBdocCU() {
-      let email = firebase.auth().currentUser.email;
-      await firebase.firestore().collection('users').doc(email).update({
-        lastLI:Date.now(),
-        //logT:FieldValue.increment(1),
-      });
-    }
   },
 };
 </script>

@@ -11,7 +11,7 @@
             <v-text-field
                 v-model="email"
                 :readonly="loading"
-                :rules="[required]"
+                :rules="[required, validcorr]"
                 class="mb-2"
                 clearable
                 label="Correo:"
@@ -39,7 +39,7 @@
                 type="submit"
                 variant="elevated"
             >
-              Sign In
+              Log In
             </v-btn>
           </v-form>
         </v-card>
@@ -59,22 +59,21 @@ export default {
     show1: false,
     show2: true,
     rules: {
-      required: value => !!value || 'Required.',
-      min: v => v.length >= 6 || 'Min 6 characters',
+      required: value => !!value || 'Requerido.',
+      min: v => v.length >= 6 || 'Min 6 caracteres',
     }
   }),
 
   methods: {
     onSubmit () {
-      if (!this.form) return
-
-      this.loading = true
-
-      setTimeout(() => (this.loading = false), 2000)
+      alert("Error connecting to firebase");
     },
     required (v) {
-      return !!v || 'Field is required'
+      return !!v || 'Se requiere completar el campo'
     },
+    validcorr (v) {
+      return v.includes("@") && (v.includes(".com") || v.includes(".mx")) || 'Correo invalido por formato (*@*.com / *@*.mx)'
+    }
   },
 }
 </script>
