@@ -1,8 +1,11 @@
 <template>
   <v-container>
+    <NavBarAuth></NavBarAuth>
     <v-row class="text-center">
       <v-col cols="12">
-        <h1 style="color: #384ffe;" class="mt-20 mb-15">Log In</h1>
+        <h1 class="display-2 font-weight-bold mb-3" style="color: #384ffe">
+          Inicia Sesión
+        </h1>
         <v-card class="mx-auto px-6 py-8" max-width="344">
           <v-form
               v-model="form"
@@ -43,12 +46,24 @@
             </v-btn>
           </v-form>
         </v-card>
+        <v-dialog ref="dialog" v-model="dialogVisible" width="300">
+          <v-card>
+            <v-card-title>Error de inicio de sesión</v-card-title>
+            <v-card-text>Credenciales inválidas</v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" @click="dialogVisible = false">Cerrar</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import firebase from "firebase/compat/app";
+import router from '@/router'
+import NavBarAuth from "@/components/NavBarAuth.vue"
 export default {
   name: "LogIn",
   data: () => ({
@@ -61,12 +76,18 @@ export default {
     rules: {
       required: value => !!value || 'Requerido.',
       min: v => v.length >= 6 || 'Min 6 caracteres',
-    }
+    },
+    dialogVisible: false,
   }),
 
   methods: {
     onSubmit () {
-      alert("Error connecting to firebase");
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
+        router.push('/Alumno');
+      })
+          .catch((error) => {
+            this.dialogVisible = true;
+          });
     },
     required (v) {
       return !!v || 'Se requiere completar el campo'
@@ -75,6 +96,7 @@ export default {
       return v.includes("@") && (v.includes(".com") || v.includes(".mx")) || 'Correo invalido por formato (*@*.com / *@*.mx)'
     }
   },
+  components: {NavBarAuth},
 }
 </script>
 

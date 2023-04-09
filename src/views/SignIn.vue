@@ -1,8 +1,11 @@
 <template>
   <v-container>
+    <NavBarAuth></NavBarAuth>
     <v-row class="text-center">
       <v-col cols="12">
-        <h1 style="color: #384ffe;" class="mt-20 mb-15">Log In</h1>
+        <h1 class="display-2 font-weight-bold mb-3" style="color: #384ffe">
+          Crea Una Cuenta
+        </h1>
         <v-card class="mx-auto px-6 py-8" max-width="344">
           <v-form
               v-model="form"
@@ -28,6 +31,13 @@
                 outlined
             ></v-text-field>
             <v-text-field
+                v-model="corr"
+                label="Correo de respaldo"
+                type="email"
+                :rules="[required,validcorr]"
+                outlined
+            ></v-text-field>
+            <v-text-field
                 v-model="con1"
                 label="Contraseña"
                 type="password"
@@ -39,13 +49,6 @@
                 label="Repite Contraseña"
                 type="password"
                 :rules="[required,samecon]"
-                outlined
-            ></v-text-field>
-            <v-text-field
-                v-model="corr"
-                label="Correo de respaldo"
-                type="email"
-                :rules="[required,validcorr]"
                 outlined
             ></v-text-field>
 
@@ -67,6 +70,9 @@
 </template>
 
 <script>
+import NavBarAuth from "@/components/NavBarAuth.vue";
+import firebase from "firebase/compat/app";
+import router from '@/router';
 export default {
   name: "SignIn",
   data: () => ({
@@ -80,7 +86,27 @@ export default {
 
   methods: {
     onSubmit () {
-      alert("Error connecting to firebase");
+      firebase.auth().createUserWithEmailAndPassword(this.corrt, this.con1)
+          .then(() => {
+            // Guardar los datos adicionales del usuario en la base de datos de Firebase
+            const db = firebase.firestore()
+            db.collection('users').doc(firebase.auth().currentUser.uid).set({
+              fullName: this.nombre,
+              matricula: this.mat,
+              personalEmail: this.corr
+            })
+                .then(() => {
+                  setTimeout(() => {
+                    router.push('/Alumno')
+                  }, 500);
+                })
+                .catch((error) => {
+                  console.error(error)
+                })
+          })
+          .catch((error) => {
+            console.error(error)
+          })
     },
     required (v) {
       return !!v || 'Se requiere completar el campo'
@@ -100,6 +126,9 @@ export default {
     valmat (v) {
       return v.length === 9 || 'Matricula requiere de 9 posiciones'
     },
+  },
+  components: {
+    NavBarAuth
   },
 }
 </script>

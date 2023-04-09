@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <NavBarAlumno></NavBarAlumno>
     <v-row class="text-center">
       <v-col cols="12" align="center" justify="center">
         <h1 class="display-2 font-weight-bold mb-3" style="color: #384ffe">
@@ -46,8 +47,11 @@
 </template>
 
 <script>
+import NavBarAlumno from "@/components/NavBarAlumno.vue";
+
 export default {
   name: "HelloWorld",
+  components: {NavBarAlumno},
 };
 </script>
 
